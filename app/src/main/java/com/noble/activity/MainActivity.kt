@@ -4,11 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,26 +40,36 @@ fun MinterComposeApp(content: @Composable () -> Unit) {
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name!", modifier = Modifier.padding(15.dp))
+    Text (
+        text = "Hello $name!",
+        modifier = Modifier.padding(24.dp),
+        style = MaterialTheme.typography.body1.copy(color = Color.Yellow)
+    )
 }
 
 @Composable
 fun Counter(count: Int, updateCount: (Int) -> Unit) {
-    Button(onClick = { updateCount(count+1) }) {
+    Button(
+        onClick = { updateCount(count+1) },
+        colors = ButtonConstants.defaultButtonColors(
+            backgroundColor = if (count > 5) Color.Green else Color.White
+        )
+    ) {
         Text("I've been clicked $count times")
     }
 }
 
 @Composable
-fun MyScreenContent(names: List<String> = listOf("Jake Wharton", "Ian Lake", "Florentina <3")) {
+fun MyScreenContent(names: List<String> = listOf("Android", "there")) {
     val counterState = remember { mutableStateOf(0) }
 
-    Column {
-        for (name in names) {
-            Greeting(name = name)
-            Divider(color = Color.Black)
+    Column(modifier = Modifier.fillMaxHeight()) {
+        Column(modifier = Modifier.weight(1f)) {
+            for (name in names) {
+                Greeting(name = name)
+                Divider(color = Color.Black)
+            }
         }
-        Divider(color = Color.Transparent, thickness = 32.dp)
         Counter(
             count = counterState.value,
             updateCount = { newCount ->
